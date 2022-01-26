@@ -55,7 +55,7 @@ cols = list(df.columns.values)
 df = df[cols[0:4] + [cols[-1]] + cols[4:12]]
 (df.describe)
 
-#Save data in a different formats
+#Save data in different formats
 #df.to_csv('modified.csv', index = False)
 #df.to_excel('modified.xlsx', index = False)
 #df.to_csv('modified.txt', index = False, sep='\t')
@@ -69,6 +69,7 @@ new_df.to_csv('filtered.csv')
 
 #Reset Index in the new dataframe and get rid of the old index
 #inplace = True so we dont need "new_df =" at the start
+#inplace modifies the original data
 new_df.reset_index(drop=True, inplace=True)
 new_df.to_csv('filtered.csv')
 (new_df)
@@ -82,7 +83,7 @@ new_df.to_csv('filtered.csv')
 #Same but ignore case
 (df.loc[df['Type 1'].str.contains('fire|grass', flags=re.I, regex = True)])
 
-#Filter that starts with "pi"
+#Filter - Show only those that start with "pi"
 (df.loc[df['Name'].str.contains('^pi[a-z]*', flags=re.I, regex = True)])
 
 #Change the dataframe based on the conditions
@@ -97,7 +98,7 @@ df.loc[df['Type 1'] == 'Flamer', 'Legendary'] = False
 df = pd.read_csv('modified.csv')
 (df)
 
-#Modify more columns
+#Modify more columns at the same time
 df.loc[df['Total'] > 500, ['Generation','Legendary']] = ['Test 1', 'Test 2']
 (df)
 
