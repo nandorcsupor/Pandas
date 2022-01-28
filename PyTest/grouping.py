@@ -1,6 +1,6 @@
 class TestClass:
     def Test_one(self):
-        x = 'edureka'
+        x = "edureka"
         assert 'r' in x
 
     
