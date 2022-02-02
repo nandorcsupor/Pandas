@@ -1,5 +1,7 @@
 import pandas as pd
 import re
+import seaborn as sns
+import numpy as np
 
 #Load in the data
 df = pd.read_csv('pokemon_data.csv')
@@ -126,10 +128,71 @@ for df in pd.read_csv('modified.csv', chunksize=5):
     print(df)
 """
 #Create new empty Dataframe with the same columns 
-new_df = pd.Dataframe(columns=df.columns)
+new_df = pd.DataFrame(columns=df.columns)
 
 #Building up the new Dataframe chunk by chunk
+"""
 for df in pd.read_csv('modified.csv', chunksize=5):
     results = df.groupby(['Type 1']).count()
 
     new_df = pd.concat([new_df, results])
+"""
+#Merge and Join are probably the same ?
+#Concat and Append are also probably the same ?
+
+tips = sns.load_dataset('tips')
+#(tips.head(3)
+
+tips_bill = tips.groupby(['sex', 'smoker'])[['total_bill', 'tip']].sum()
+tips_tip = tips.groupby(['sex', 'smoker'])[['total_bill', 'tip']].sum()
+
+del tips_bill['tip']
+del tips_tip['total_bill']
+
+#print(tips_bill)
+#print(tips_tip)
+
+#Merge
+
+#print(pd.merge(tips_bill, tips_tip, right_index = True, left_index = True))
+
+#print(pd.merge(tips_bill.reset_index(),tips_tip.reset_index(),on=['sex', 'smoker']))
+
+#Easier way : 
+#print(pd.merge(tips_bill.reset_index(), tips_tip.reset_index()))
+
+#Combinations
+tips_bill_strange = tips_bill.reset_index(level=0)
+#print(tips_bill_strange)
+
+#print(pd.merge(tips_tip.reset_index(),tips_bill_strange,on=['sex', 'smoker']))
+
+
+#Left merge - where tips_bill exists - even if tips_tip does NOT Exist there
+#print(pd.merge(tips_bill.reset_index(),tips_tip.reset_index().head(2),how='left'))
+
+#Where BOTH EXISTS
+
+#print(pd.merge(tips_bill.reset_index(),tips_tip.reset_index().head(2),how="inner"))
+
+#OUTER JOIN - Indicator = TRUE - shows what kind of merge was done.
+#print(pd.merge(tips_bill.reset_index().tail(3),tips_tip.reset_index().head(3),how="outer",indicator=True))
+
+
+#It can handle columns with the same name
+#print(pd.merge(tips_bill,tips_bill,right_index=True,left_index=True,suffixes=('_left', '_right')))
+
+
+# JOIN MORE THAN ONE DATAFRAME - Concatenation
+
+#print(pd.concat([tips_bill, tips_bill, tips_tip], sort=False))
+
+#print(pd.concat([tips_bill, tips_bill, tips_tip], axis=1))
+
+#Specify where is comes from - when theres a lot of datasource
+
+#print(pd.concat([tips_bill, tips_tip], sort=False, keys=['num0', 'num1']))
+
+#CONCAT - When You have Multiple dataframe!
+#Merge - When You need more flexibility
+
